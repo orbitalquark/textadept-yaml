@@ -1,0 +1,29 @@
+--- yaml.c.orig	2020-10-05 00:31:14.681346688 -0400
++++ yaml.c	2020-10-05 00:31:37.565496147 -0400
+@@ -52,7 +52,7 @@
+ };
+ 
+ LUALIB_API int
+-luaopen_yaml (lua_State *L)
++luaopen_yaml_yaml (lua_State *L)
+ {
+    parser_init (L);
+    scanner_init (L);
+@@ -64,3 +64,17 @@
+ 
+    return 1;
+ }
++
++LUALIB_API int
++luaopen_yaml_yamlosx (lua_State *L)
++{
++  parser_init (L);
++  scanner_init (L);
++
++  luaL_register(L, "yaml", R);
++
++  lua_pushliteral(L, MYVERSION);
++  lua_setfield(L, -2, "version");
++
++  return 1;
++}

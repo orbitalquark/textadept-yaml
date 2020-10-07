@@ -78,3 +78,18 @@ lyaml: | $(lyaml_zip) ;
 	sed -i "s/require 'lyaml/require 'yaml.lyaml/;" $@/*.lua
 	sed -i "s/require 'yaml'/not OSX and require 'yaml.yaml' or require 'yaml.yamlosx'/;" $@/*.lua
 	cd $@ && patch -p0 < ../lyaml.patch
+
+# Releases.
+
+ifneq (, $(shell hg summary 2>/dev/null))
+  archive = hg archive -X ".hg*" $(1)
+else
+  archive = git archive HEAD --prefix $(1)/ | tar -xf -
+endif
+
+release: yaml | $(libyaml_zip) $(lyaml_zip)
+	cp $| $<
+	make -C $< deps && make -C $< -j ta="../../.."
+	zip -r $<.zip $< -x "*.zip" "*.c" "*.h" "*.o" "*.def" "*.la" "$</.git*" \
+		"$</libyaml*" && rm -r $<
+yaml: ; $(call archive,$@)

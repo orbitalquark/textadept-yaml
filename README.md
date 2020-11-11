@@ -16,16 +16,4 @@ It provides utilities for editing YAML documents.
 Jumps to the anchor for the alias underneath the caret.
 
 
-## Tables defined by `_M.yaml`
-
-<a id="keys.yaml"></a>
-### `keys.yaml`
-
-Container for YAML-specific key bindings.
-
-<a id="snippets.yaml"></a>
-### `snippets.yaml`
-
-Container for YAML-specific snippets.
-
 ---

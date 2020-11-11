@@ -59,20 +59,6 @@ function M.goto_anchor()
   end
 end
 
----
--- Container for YAML-specific key bindings.
--- @class table
--- @name _G.keys.yaml
-keys.yaml = {
-  [CURSES and 'meta+&' or OSX and 'cmd+&' or 'ctrl+&'] = M.goto_anchor
-}
-
--- Snippets.
-
----
--- Container for YAML-specific snippets.
--- @class table
--- @name _G.snippets.yaml
-snippets.yaml = {}
+keys.yaml[CURSES and 'meta+&' or OSX and 'cmd+&' or 'ctrl+&'] = M.goto_anchor
 
 return M

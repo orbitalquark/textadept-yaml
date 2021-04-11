@@ -19,11 +19,7 @@ local lyaml = require('yaml.lyaml')
 events.connect(events.LEXER_LOADED, function(name)
   if name ~= 'yaml' then return end
   buffer.use_tabs = false
-  buffer.word_chars = table.concat{
-    'abcdefghijklmnopqrstuvwxyz',
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    '1234567890-*'
-  }
+  buffer.word_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-*'
 end)
 
 -- Commands.
@@ -53,9 +49,7 @@ function M.goto_anchor()
   if anchor then
     buffer:target_whole_document()
     buffer.search_flags = buffer.FIND_WHOLEWORD
-    if buffer:search_in_target('&' .. anchor) ~= -1 then
-      buffer:goto_pos(buffer.target_start)
-    end
+    if buffer:search_in_target('&' .. anchor) ~= -1 then buffer:goto_pos(buffer.target_start) end
   end
 end
 

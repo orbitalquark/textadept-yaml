@@ -7,8 +7,8 @@ ta_lua = $(ta_src)/lua/src
 CC = gcc
 CFLAGS = -fPIC
 LDFLAGS = -Wl,--retain-symbols-file -Wl,$(ta_src)/lua.sym
-libyaml_flags = -Ilibyaml -DYAML_VERSION_MAJOR=0 -DYAML_VERSION_MINOR=2 \
-  -DYAML_VERSION_PATCH=5 -D'YAML_VERSION_STRING="0.2.5"'
+libyaml_flags = -Ilibyaml -DYAML_VERSION_MAJOR=0 -DYAML_VERSION_MINOR=2 -DYAML_VERSION_PATCH=5 \
+  -D'YAML_VERSION_STRING="0.2.5"'
 lyaml_flags = -Ilibyaml -D'VERSION="0.2.5"' -Ilyaml
 
 all: yaml.so yaml.dll yamlosx.so
@@ -19,8 +19,7 @@ clean: ; rm -f *.o *.so *.dll
 CROSS_WIN = i686-w64-mingw32-
 CROSS_OSX = x86_64-apple-darwin17-cc
 
-libyaml_objs = \
-  api.o dumper.o emitter.o loader.o parser.o reader.o scanner.o writer.o
+libyaml_objs = api.o dumper.o emitter.o loader.o parser.o reader.o scanner.o writer.o
 libyaml_win_objs = $(addsuffix -win.o, $(basename $(libyaml_objs)))
 libyaml_osx_objs = $(addsuffix -osx.o, $(basename $(libyaml_objs)))
 lyaml_objs = lemitter.o lparser.o lscanner.o lyaml.o
@@ -40,8 +39,7 @@ $(lyaml_objs): l%.o: lyaml/%.c
 $(libyaml_win_objs): %-win.o: libyaml/%.c
 	$(CROSS_WIN)$(CC) -c $(CFLAGS) $(libyaml_flags) $< -o $@
 $(lyaml_win_objs): l%-win.o: lyaml/%.c
-	$(CROSS_WIN)$(CC) -c $(CFLAGS) $(lyaml_flags) -DLUA_BUILD_AS_DLL -DLUA_LIB \
-		-I$(ta_lua) $< -o $@
+	$(CROSS_WIN)$(CC) -c $(CFLAGS) $(lyaml_flags) -DLUA_BUILD_AS_DLL -DLUA_LIB -I$(ta_lua) $< -o $@
 $(libyaml_osx_objs): %-osx.o: libyaml/%.c
 	$(CROSS_OSX) -c $(CFLAGS) $(libyaml_flags) $< -o $@
 $(lyaml_osx_objs): l%-osx.o: lyaml/%.c
@@ -90,6 +88,5 @@ endif
 release: yaml | $(libyaml_zip) $(lyaml_zip)
 	cp $| $<
 	make -C $< deps && make -C $< -j ta="../../.."
-	zip -r $<.zip $< -x "*.zip" "*.c" "*.h" "*.o" "*.def" "*.la" "$</.git*" \
-		"$</libyaml*" && rm -r $<
+	zip -r $<.zip $< -x "*.zip" "*.c" "*.h" "*.o" "*.def" "*.la" "$</.git*" "$</libyaml*" && rm -r $<
 yaml: ; $(call archive,$@)

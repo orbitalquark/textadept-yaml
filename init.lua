@@ -20,7 +20,7 @@ local M = {}
 --   Jump to the anchor for the alias under the caret.
 module('_M.yaml')]]
 
-local lyaml = require('yaml.lyaml')
+local lyaml = not (WIN32 and CURSES) and require('yaml.lyaml') or nil
 
 -- Always use spaces.
 events.connect(events.LEXER_LOADED, function(name)

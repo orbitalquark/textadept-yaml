@@ -10,6 +10,7 @@ LDFLAGS = -Wl,--retain-symbols-file -Wl,$(ta_src)/lua.sym
 libyaml_flags = -Ilibyaml -DYAML_VERSION_MAJOR=0 -DYAML_VERSION_MINOR=2 -DYAML_VERSION_PATCH=5 \
   -D'YAML_VERSION_STRING="0.2.5"'
 lyaml_flags = -Ilibyaml -D'VERSION="0.2.5"' -Ilyaml
+WGET = wget -O $@
 
 all: yaml.so yaml.dll yamlosx.so
 clean: ; rm -f *.o *.so *.dll
@@ -65,10 +66,10 @@ luadoc: init.lua
 deps: libyaml lyaml
 
 libyaml_zip = 0.2.5.zip
-$(libyaml_zip): ; wget https://github.com/yaml/libyaml/archive/$@
+$(libyaml_zip): ; $(WGET) https://github.com/yaml/libyaml/archive/$@
 libyaml: | $(libyaml_zip) ; unzip -d $@ -j $| "*/src/*" "*/include/*.h"
 lyaml_zip = v6.2.6.zip
-$(lyaml_zip): ; wget https://github.com/gvvaughan/lyaml/archive/$@
+$(lyaml_zip): ; $(WGET) https://github.com/gvvaughan/lyaml/archive/$@
 lyaml: | $(lyaml_zip) ;
 	unzip -d $@ -j $| "*/ext/yaml/*" "*/lib/$@/*"
 	sed -i "s/require 'lyaml/require 'yaml.lyaml/;" $@/*.lua

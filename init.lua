@@ -33,7 +33,7 @@ end)
 
 -- Verify syntax.
 events.connect(events.FILE_AFTER_SAVE, function()
-  if buffer:get_lexer() ~= 'yaml' or not lyaml then return end
+  if buffer.lexer_language ~= 'yaml' or not lyaml then return end
   buffer:annotation_clear_all()
   local ok, errmsg = pcall(lyaml.load, buffer:get_text())
   if ok then return end

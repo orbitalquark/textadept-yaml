@@ -7,6 +7,8 @@ local M = {}
 -- The YAML module for Textadept.
 -- It provides utilities for editing YAML documents.
 --
+-- **WARNING:** this module is deprecated. It will no longer work in Textadept 12.
+--
 -- ### Compiling
 --
 -- Releases include binaries, so building this modules should not be necessary. If you want
